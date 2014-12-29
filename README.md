@@ -1,7 +1,7 @@
 AppDApplicationDiscovery
 ========================
 
-The AppDApplicationDiscovery is a solution is can be used to periodically review
+The AppDApplicationDiscovery is a solution that can be used to periodically review
 all applications in an AppDynamics controller, and generate a custom event when
 it detects that a new application has been added.  It utilizes a simple text file
 to keep track of the most recently discovered application ID.  When it discovers
