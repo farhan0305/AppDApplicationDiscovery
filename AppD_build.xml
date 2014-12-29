@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="AppDApplicationDiscovery" default="package" basedir=".">
+    <property name="classes.dir"		value="src"/>
+    <property name="build.dir"			value="appBuild"/>
+    <property name="lib.dir"			value="${basedir}/lib"/>
+    <property name="exec.lib.dir"		value="${basedir}/execLib"/>
+    <property name="appdiscovery.main"               value="org.appdynamics.appdiscovery.AppDiscovery"/>
+
+    <property name="AppDynamicsApplicationDiscovery.basename" value="AppDynamicsApplicationDiscovery"/>
+    <property name="AppDynamicsApplicationDiscovery.version"     value="1.0.0"/>
+
+    <loadproperties srcFile="one_time_git.properties"/>
+
+    <path id="compile.classpath">
+	<fileset dir="${exec.lib.dir}/">
+	    <include name="*.jar"/>
+	</fileset>
+    </path>
+
+    <target name="clean">
+	<delete dir="${build.dir}"/>
+	<delete dir="${exec.lib.dir}"/>
+    </target>
+
+    <target name="init" depends="clean">
+	<mkdir dir="${build.dir}"/>
+	<mkdir dir="${exec.lib.dir}"/>
+        <copy todir="${exec.lib.dir}/">
+            <fileset dir="${appd_rest_base}/lib">
+                <include name="*.jar"/>
+            </fileset>
+            <fileset dir="${lib.dir}/">
+                <include name="*.jar"/>
+            </fileset>
+        </copy>
+	<copy file="${appd_rest_base}/appBuild/${appd_rest_jar}"
+              tofile="${exec.lib.dir}/${appd_rest_jar}"/>
+
+    </target>
+
+    <target name="compile" depends="init">
+                <javac srcdir="${classes.dir}"
+                        destdir="${build.dir}"
+                        debug="on"
+                        deprecation="on"
+                        optimize="off"
+                        includes="**"
+                        target="1.6"
+                        includeantruntime="false">
+                        <classpath refid="compile.classpath"/>
+                </javac>
+    </target>
+
+    <target name="Jar_it" depends="compile">
+      <jar jarfile="${build.dir}/${AppDynamicsApplicationDiscovery.basename}_${AppDynamicsApplicationDiscovery.version}.jar">
+          <manifest>
+              <attribute name="Main-Class" value="${appdiscovery.main}"/>
+          </manifest>
+          <fileset dir="${build.dir}">
+            <include name="org/appdynamics/appdiscovery/*.class"/>
+            <include name="org/appdynamics/appdiscovery/events/*.class"/>
+            <include name="org/appdynamics/appdiscovery/utils/*.class"/>
+          </fileset>
+      </jar>
+    </target>
+
+    <target name="package" depends="Jar_it">
+        <delete file="${exec.lib.dir}/${AppDynamicsApplicationDiscovery.basename}*"/>
+        <copy file="${build.dir}/${AppDynamicsApplicationDiscovery.basename}_${AppDynamicsApplicationDiscovery.version}.jar"
+              tofile="${exec.lib.dir}/${AppDynamicsApplicationDiscovery.basename}_${AppDynamicsApplicationDiscovery.version}.jar"/>
+    </target>
+
+</project>
