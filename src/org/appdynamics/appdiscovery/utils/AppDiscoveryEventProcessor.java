@@ -7,6 +7,7 @@ import org.appdynamics.appdiscovery.events.AppDiscoveryEvent;
 import org.appdynamics.appdrestapi.RESTAccess;
 import org.appdynamics.appdrestapi.data.Application;
 import org.appdynamics.appdrestapi.data.Applications;
+import org.appdynamics.appdrestapi.data.RESTProxy;
 import org.appdynamics.appdrestapi.util.PostEvent;
 
 public class AppDiscoveryEventProcessor {
@@ -22,7 +23,15 @@ public class AppDiscoveryEventProcessor {
 		this.hfp = new AppDiscoveryHistoryFileProcessor(AppDiscoveryOptions.HISTORYFILE_V);
 		this.oldMaxApplicationId = hfp.readLastApplicationId();
 		this.newMaxApplicationId = this.oldMaxApplicationId;
-	    access = new RESTAccess(AppDiscoveryOptions.CONTROLLER_V, AppDiscoveryOptions.PORT_V, AppDiscoveryOptions.SSL_V, AppDiscoveryOptions.USERNAME_V, AppDiscoveryOptions.PASSWD_V, AppDiscoveryOptions.ACCOUNT_V);
+		
+	    if (AppDiscoveryOptions.PROXYURL_V != null && AppDiscoveryOptions.PROXYPORT_V != null) {
+	    	Integer proxyPort = new Integer(AppDiscoveryOptions.PROXYPORT_V);
+			RESTProxy proxy = new RESTProxy(AppDiscoveryOptions.PROXYURL_V, proxyPort);
+		    access = new RESTAccess(AppDiscoveryOptions.CONTROLLER_V, AppDiscoveryOptions.PORT_V, AppDiscoveryOptions.SSL_V, AppDiscoveryOptions.USERNAME_V, AppDiscoveryOptions.PASSWD_V, AppDiscoveryOptions.ACCOUNT_V, proxy);	    	
+		}
+	    else {
+		    access = new RESTAccess(AppDiscoveryOptions.CONTROLLER_V, AppDiscoveryOptions.PORT_V, AppDiscoveryOptions.SSL_V, AppDiscoveryOptions.USERNAME_V, AppDiscoveryOptions.PASSWD_V, AppDiscoveryOptions.ACCOUNT_V);	    	
+	    }
 	}
 	
 	public void processApplications() {

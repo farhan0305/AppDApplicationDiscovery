@@ -29,7 +29,7 @@ extra spaces are present):
 
 appd_rest_base=../AppDRESTAPI-SDK
 
-appd_rest_jar=RESTAPI_1.0.15.jar
+appd_rest_jar=RESTAPI_1.0.16.jar
 
 Building:
 -----------
@@ -42,7 +42,7 @@ This will create a directory called execLib with all of the necessary libraries 
 Usage
 --------
 ```
-java -cp "execLib/*" org.appdynamics.appdiscovery.AppDiscovery -c <FQDN-For-Controller> -P <PORT> -u<USER-NAME> -p <PASSWORD> -a <ACCOUNT-NAME> -h <HISTORY_FILE_NAME> -A <APPLICATION_TO_POST_EVENT_TO> [-s]
+java -cp "execLib/*" org.appdynamics.appdiscovery.AppDiscovery -c <FQDN-For-Controller> -P <PORT> -u<USER-NAME> -p <PASSWORD> -a <ACCOUNT-NAME> -h <HISTORY_FILE_NAME> -A <APPLICATION_TO_POST_EVENT_TO> -x <HTTP_PROXY> [-s]
 
 
  -a,--account <a>    :   If controller is multi-tenant add the account
@@ -51,7 +51,7 @@ java -cp "execLib/*" org.appdynamics.appdiscovery.AppDiscovery -c <FQDN-For-Cont
 
  -s,--ssl            :   Use SSL with connection
 
- -P,--port <P>       :   The is going to be the port that is used by the controller.
+ -P,--port <P>       :   This is going to be the port that is used by the controller.
 
  -u,--username <u>   :   The user name to use for the connection
 
@@ -61,6 +61,9 @@ java -cp "execLib/*" org.appdynamics.appdiscovery.AppDiscovery -c <FQDN-For-Cont
 
  -A,--appname <A>    :   The name of the application to post the custom event to
 
+ -X,--proxyurl <X>   :   Optional http proxy url used to connect to the controller 
+
+ -x,--proxyport <x>  :   Optional http proxy port used to connect to the controller 
 
 ```
 

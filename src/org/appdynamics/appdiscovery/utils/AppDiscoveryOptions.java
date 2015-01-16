@@ -64,6 +64,18 @@ public class AppDiscoveryOptions {
     public static final boolean APPLICATION_R=true;
     public static final boolean APPLICATION_A=true;
     
+    public static final String PROXYURL_L="proxyurl";
+    public static final String PROXYURL_S="X";
+    public static final String PROXYURL_D="HTTP proxy url required to connect to the controller";
+    public static final boolean PROXYURL_R=false;
+    public static final boolean PROXYURL_A=false;
+    
+    public static final String PROXYPORT_L="proxyport";
+    public static final String PROXYPORT_S="x";
+    public static final String PROXYPORT_D="HTTP proxy port required to connect to the controller";
+    public static final boolean PROXYPORT_R=false;
+    public static final boolean PROXYPORT_A=false;
+
     public static final String OPTION_ERROR_1="A required parameter was not found. Please view the help menu for required parameters.";
     
     public static String USERNAME_V=null;
@@ -74,6 +86,8 @@ public class AppDiscoveryOptions {
     public static String ACCOUNT_V="Customer1";
     public static String PORT_V=null;
     public static boolean SSL_V=false;
+    public static String PROXYURL_V=null;
+    public static String PROXYPORT_V=null;
     
     private static Logger logger=Logger.getLogger(AppDiscoveryOptions.class.getName());
     private static Options options=new Options();
@@ -126,6 +140,18 @@ public class AppDiscoveryOptions {
                 .create( APPLICATION_S );
         options.addOption(application);
         
+        Option proxyurl = OptionBuilder.withLongOpt(PROXYURL_L).withArgName( PROXYURL_S )
+                .hasArg()
+                .withDescription( PROXYURL_D )
+                .create( PROXYURL_S );
+        options.addOption(proxyurl);
+        
+        Option proxyport = OptionBuilder.withLongOpt(PROXYPORT_L).withArgName( PROXYPORT_S )
+                .hasArg()
+                .withDescription( PROXYPORT_D )
+                .create( PROXYPORT_S );
+        options.addOption(proxyport);
+
         options.addOption(SSL_S, SSL_L, SSL_A, SSL_D);
     }
     
@@ -174,6 +200,14 @@ public class AppDiscoveryOptions {
             if(cmdLine.hasOption(ACCOUNT_L) || cmdLine.hasOption(ACCOUNT_S)){
                 ACCOUNT_V=cmdLine.getOptionValue(ACCOUNT_S);    
             }
+            
+            if(cmdLine.hasOption(PROXYURL_L) || cmdLine.hasOption(PROXYURL_S)){
+                PROXYURL_V=cmdLine.getOptionValue(PROXYURL_S);    
+            }
+
+            if(cmdLine.hasOption(PROXYPORT_L) || cmdLine.hasOption(PROXYPORT_S)){
+                PROXYPORT_V=cmdLine.getOptionValue(PROXYPORT_S);    
+            }
         }
         catch( ParseException exp ) {
             // oops, something went wrong
@@ -190,6 +224,8 @@ public class AppDiscoveryOptions {
         bud.append("\n\tAccount name: ").append(AppDiscoveryOptions.ACCOUNT_V);
         bud.append("\n\tApplication name: ").append(AppDiscoveryOptions.APPLICATION_V);
         bud.append("\n\tHistory file: ").append(AppDiscoveryOptions.HISTORYFILE_V);
+        bud.append("\n\tProxy URL: ").append(AppDiscoveryOptions.PROXYURL_V);
+        bud.append("\n\tProxy Port: ").append(AppDiscoveryOptions.PROXYPORT_V);
         
         logger.log(Level.INFO, bud.toString());
        
